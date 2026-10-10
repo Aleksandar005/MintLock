@@ -1,0 +1,13 @@
+== KORAK 1: PUN UNUTAR-RED round-AIR (64 limba) + deljena LogUp tablica [0,2^16) + CTR ==
+glavne kolone: 17 ; aux (LogUp akumulatori): 4 ; UKUPNO: 21 (< 255)
+trag: N = 65536 redova (== velicina deljene tablice) ; aktivnih limb-redova: 128
+range-check tokovi kroz JEDNU tablicu: P, C', |B'|, W  (nula bit-dekompozicija)
+
+[validan]   pun round-AIR + LogUp: verify=PASS (ocek PASS) ; dokaz 107.0 KB ; prove 3261 ms ; verify 0.9 ms ; sec 108
+[negativan] P[7]=70000 (van [0,2^16), LogUp): verify=FAIL (ocek FAIL) ; dokaz 105.8 KB ; prove 2803 ms ; verify 2.1 ms ; sec 108
+[negativan] P[3]=65536 (na granici, LogUp): verify=FAIL (ocek FAIL) ; dokaz 108.0 KB ; prove 2959 ms ; verify 2.1 ms ; sec 108
+[negativan] P[9] pogresan proizvod (in-range): verify=FAIL (ocek FAIL) ; dokaz 108.3 KB ; prove 2900 ms ; verify 2.3 ms ; sec 108
+[negativan] W[5] pogresan (in-range, normalize): verify=FAIL (ocek FAIL) ; dokaz 106.5 KB ; prove 2942 ms ; verify 2.2 ms ; sec 108
+
+SVE PROSLO: pun unutar-red round-AIR sklopljen; svi range-check-ovi kroz JEDNU
+deljenu LogUp tablicu; CTR punog stepena; sirina 21 kolona < 255.

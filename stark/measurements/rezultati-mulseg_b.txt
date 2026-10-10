@@ -1,0 +1,8 @@
+== MILESTONE B: 64×64 multi-limb  a · c = C  (sliding-window) ==
+a,c = 64 limba (1024-bit) -> C = 128 limba (2048-bit)
+trag: 128 redova x 169 kolona  (POS one-hot izbegnut -> 169 < 255)
+dokaz 66.0 KB ; prove 21 ms ; verify 1.02 ms ; sec 117 ; verify=PASS
+lazno C: ODBIJEN [ok]
+lazno a: ODBIJEN [ok]
+
+SVE PROSLO: 64×64 mnozilac na punoj sirini, 169 kolona < 255.

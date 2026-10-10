@@ -1,0 +1,16 @@
+== MILESTONE E2: ulancavanje dva rho segmenta + D-vezivanje ==
+|D| = 10803839 ; segment = 7 rundi + disc-invarijanta 4ac-b²==|D| po redu
+
+seg1 (F0->F7):  verify=PASS ; dokaz 4.8 KB
+seg2 (F7->F14): verify=PASS ; dokaz 4.7 KB
+
+== ULANCAVANJE (boundary I/O) ==
+seg1.F_out == seg2.F_in : PASS
+seg1.|D| == seg2.|D|    : PASS  (D-vezivanje)
+
+== NEGATIVNI TESTOVI ==
+prekinut lanac (F_in != F_out): ODBIJEN [ok]
+D-vezivanje (lazan |D|):        ODBIJEN [ok]
+lazan F_out (seg1):             ODBIJEN [ok]
+
+SVE PROSLO: dve runde ulancane preko boundary I/O, D vezano, falsifikati padaju.

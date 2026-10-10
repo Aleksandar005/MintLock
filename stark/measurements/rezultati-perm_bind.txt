@@ -1,0 +1,8 @@
+== PERM-BIND: lancano vezivanje c(r)==a(r+1) grand-product permutacijom ==
+32 blokova x 8 limba ; tag=(r*L+p) c / ((r-1)*L+p) a ; 1 aux Z stubac
+
+[validan]   lanac drzi: verify=PASS (ocek PASS) ; dokaz 63.1 KB ; prove 99 ms
+[negativan] a[10][3]+1 (prekinut lanac): verify=FAIL (ocek FAIL) ; dokaz 62.3 KB ; prove 71 ms
+[negativan] a[20][0]+1 (prekinut lanac): verify=FAIL (ocek FAIL) ; dokaz 61.9 KB ; prove 69 ms
+
+SVE PROSLO: permutacioni argument vezuje lanac; prekid ODBIJEN.

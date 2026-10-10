@@ -1,0 +1,33 @@
+# Rezultati (Goldilocks + kvadratna ekstenzija, blowup 8, 42 upita, grinding 16)
+# masina: 1 vCPU, ~4GB RAM (sandbox); rustc/cargo 1.75; winterfell 0.8.3
+
+== Wesolowski verifikaciona jednacina (prime-field analog) ==
+polje: Goldilocks p = 2^64 - 2^32 + 1
+pi = 81985529216486895
+u  = 18364758544493064720
+l  = 6858309431304716291  (~63-bit)
+r  = 1908175906733348337
+w  = pi^l * u^r = 12795735015439882997
+trace: 128 redova x 5 kolone
+[ok] trace reprodukuje (w, l, r) na kraju
+
+== DOKAZ ==
+vreme dokazivanja      : 23.6 ms
+velicina dokaza        : 20832 B (20.34 KB)
+sigurnost (conjectured): 117 bita
+sigurnost (proven)     : 74 bita
+
+== VERIFIKACIJA ==
+[PASS] validan dokaz PRIHVACEN za 0.34 ms
+neg-test (lazno w)      : ODBIJEN [ok]
+neg-test (ostecen dokaz): ODBIJEN [ok]
+SWEEP n=128 proof_B=20832 prove_ms=23.6 verify_ms=0.34 sec_conj=117
+
+SVE PROSLO.
+
+== SWEEP (dubina n = broj dokazanih operacija) ==
+SWEEP n=128 proof_B=20832 prove_ms=11.5 verify_ms=0.29 sec_conj=117
+SWEEP n=512 proof_B=34161 prove_ms=18.3 verify_ms=0.39 sec_conj=115
+SWEEP n=2048 proof_B=47743 prove_ms=33.2 verify_ms=0.60 sec_conj=113
+SWEEP n=8192 proof_B=66673 prove_ms=149.0 verify_ms=0.68 sec_conj=111
+SWEEP n=32768 proof_B=89480 prove_ms=637.8 verify_ms=0.90 sec_conj=109

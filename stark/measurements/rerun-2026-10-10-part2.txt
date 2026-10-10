@@ -1,0 +1,102 @@
+# Rerun 2026-10-10, rustc 1.97.0, winterfell 0.8.3 (Cargo.lock), cargo build --release
+
+=================== round_full
+== KORAK 1: PUN UNUTAR-RED round-AIR (64 limba) + deljena LogUp tablica [0,2^16) + CTR ==
+glavne kolone: 17 ; aux (LogUp akumulatori): 4 ; UKUPNO: 21 (< 255)
+trag: N = 65536 redova (== velicina deljene tablice) ; aktivnih limb-redova: 128
+range-check tokovi kroz JEDNU tablicu: P, C', |B'|, W  (nula bit-dekompozicija)
+
+[validan]   pun round-AIR + LogUp: verify=PASS (ocek PASS) ; dokaz 107.0 KB ; prove 2519 ms ; verify 0.9 ms ; sec 108
+[negativan] P[7]=70000 (van [0,2^16), LogUp): verify=FAIL (ocek FAIL) ; dokaz 105.8 KB ; prove 2436 ms ; verify 0.2 ms ; sec 108
+[negativan] P[3]=65536 (na granici, LogUp): verify=FAIL (ocek FAIL) ; dokaz 108.0 KB ; prove 2604 ms ; verify 0.2 ms ; sec 108
+[negativan] P[9] pogresan proizvod (in-range): verify=FAIL (ocek FAIL) ; dokaz 108.3 KB ; prove 2597 ms ; verify 0.2 ms ; sec 108
+[negativan] W[5] pogresan (in-range, normalize): verify=FAIL (ocek FAIL) ; dokaz 106.5 KB ; prove 2616 ms ; verify 0.4 ms ; sec 108
+
+SVE PROSLO: pun unutar-red round-AIR sklopljen; svi range-check-ovi kroz JEDNU
+deljenu LogUp tablicu; CTR punog stepena; sirina 21 kolona < 255.
+
+=================== reduce_chain
+== KORAK 2: ULANČAVANJE 228 rundi u JEDAN trag + JEDNA deljena LogUp tablica [0,2^16) ==
+glavne kolone: 14 + aux (LogUp): 1 = 15 (< 255)
+aktivnih redova: 1824 (= 228 rundi × 8 reda) ; dužina traga N = 65536 (tablica dominira)
+mehanizmi: vezivanje granice rundi (F_out==F_in) + disc-invarijanta 4ac-b²=|D| + CTR
+amortizacija: JEDNA tablica 65536 redova za |b| range-check KROZ SVIH 228 rundi
+
+startna forma: a=380 b=241 c=7146 ; |D|=10803839 ; disc očuvana kroz sve rundi
+[validan]   228 rundi ulančano: verify=PASS (ocek PASS) ; dokaz 104.2 KB ; prove 1653 ms ; verify 0.9 ms ; sec 108
+[negativan] prekinut lanac @rundi 100 (F_out!=F_in): verify=FAIL (ocek FAIL) ; dokaz 104.3 KB ; prove 1689 ms ; verify 0.2 ms ; sec 108
+[negativan] pokvarena disc @rundi 50 (4ac-b²!=|D|): verify=FAIL (ocek FAIL) ; dokaz 105.1 KB ; prove 1826 ms ; verify 0.2 ms ; sec 108
+[negativan] |b|@rundi 30 = 70000 (van tablice, LogUp): verify=FAIL (ocek FAIL) ; dokaz 104.6 KB ; prove 1898 ms ; verify 0.2 ms ; sec 108
+
+SVE PROSLO: ceo reduce (228 rundi) ulančan u JEDAN trag pod JEDNOM deljenom
+LogUp tablicom; granice rundi vezane, disc vezuje |D| svuda, CTR pun stepen.
+
+=================== reduce_merged
+== KORAK 3: SPAJANJE — svaka runda = 64-limb BLOK (128 reda), 228 rundi ulančano ==
+glavne kolone: 20 + aux (LogUp): 3 = 23 (< 255)
+aktivnih redova: 29184 (= 228 rundi × 128 limb-reda) ; N = 65536 (tablica dominira)
+mehanizmi u JEDNOM tragu: 64-limb mult+carry (P=k·B) + normalize (W>=0)
+  + LogUp range-check + PERM vezivanje lanca (grand-product) + CTR ; |D| javni ulaz
+
+startni blok: k=3 ; a[0]=41172 b[0]=39932 c[0]=9306 ; |D|=10803839 (disc-vezivanje)
+[validan]   228 blokova × 64-limb ulančano: verify=PASS (ocek PASS) ; dokaz 109.5 KB ; prove 2919 ms ; verify 1.3 ms ; sec 108
+[negativan] P van [0,2^16) @blok 30 (LogUp): verify=FAIL (ocek FAIL) ; dokaz 107.6 KB ; prove 2833 ms ; verify 3.4 ms ; sec 108
+[negativan] P pogrešan proizvod @blok 50 (mult+carry): verify=FAIL (ocek FAIL) ; dokaz 108.7 KB ; prove 2876 ms ; verify 3.3 ms ; sec 108
+[negativan] W pogrešan @blok 100 (normalize): verify=FAIL (ocek FAIL) ; dokaz 107.8 KB ; prove 2518 ms ; verify 0.2 ms ; sec 108
+[negativan] a-limb @blok 60 (prekinut lanac, PERM): verify=FAIL (ocek FAIL) ; dokaz 108.0 KB ; prove 2732 ms ; verify 0.3 ms ; sec 108
+
+SVE PROSLO: Korak 1 (64-limb blok-aritmetika) + Korak 2 (ulančavanje) spojeni u
+JEDAN trag pod JEDNOM deljenom LogUp tablicom; 23 kolona ≪ 255.
+
+=================== perm_bind
+== PERM-BIND: lancano vezivanje c(r)==a(r+1) grand-product permutacijom ==
+32 blokova x 8 limba ; tag=(r*L+p) c / ((r-1)*L+p) a ; 1 aux Z stubac
+
+[validan]   lanac drzi: verify=PASS (ocek PASS) ; dokaz 63.1 KB ; prove 90 ms
+[negativan] a[10][3]+1 (prekinut lanac): verify=FAIL (ocek FAIL) ; dokaz 62.3 KB ; prove 88 ms
+[negativan] a[20][0]+1 (prekinut lanac): verify=FAIL (ocek FAIL) ; dokaz 61.9 KB ; prove 83 ms
+
+SVE PROSLO: permutacioni argument vezuje lanac; prekid ODBIJEN.
+
+=================== disc_anchor
+== DISC-ANCHOR: 4ac−b²==|D| na 2048-bit formi, LogUp range-check (bez bit-dekomp) ==
+glavne kolone: 15 + aux (LogUp): 4 = 19 ; aktivnih limba: 128 ; N=65536
+
+sanity: anchor 4ac=b²+|D| drži na svih 128 limba
+[validan]   disc-anchor: verify=PASS (ocek PASS) ; dokaz 107.6 KB ; prove 2303 ms ; sec 108
+[negativan] |D|[40]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 106.1 KB ; prove 2242 ms ; sec 108
+[negativan] AC[70]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 107.8 KB ; prove 2489 ms ; sec 108
+[negativan] L[20]=70000 (van tablice, LogUp): verify=FAIL (ocek FAIL) ; dokaz 108.7 KB ; prove 2484 ms ; sec 108
+
+SVE PROSLO: |D| interno vezan za formu preko anchor-a; LogUp range-check.
+
+=================== disc_full
+== DISC-FULL: |D| <- a,b,c  (AC=a·c, BB=b·b one-hot conv + anchor 4AC-BB=|D|) ==
+faze MULT_AC/MULT_BB/ANCHOR u jednom tragu, perm-vezane ; L=4 demo ; kolone 42
+
+[validan]   |D| vezan za a,b,c: verify=PASS (ocek PASS) ; dokaz 73.8 KB ; prove 198 ms ; sec 112
+[negativan] AC proizvod pogrešan: verify=FAIL (ocek FAIL) ; dokaz 74.2 KB ; prove 197 ms ; sec 112
+[negativan] |D|[3]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 72.7 KB ; prove 210 ms ; sec 112
+[negativan] perm PVAL pokvaren (mult↔anchor veza): verify=FAIL (ocek FAIL) ; dokaz 71.2 KB ; prove 190 ms ; sec 112
+
+SVE PROSLO: |D| interno izveden iz a,b,c (mult) i vezan anchor-om, faze perm-vezane.
+
+=================== disc_full_l64
+== DISC-FULL L=64: |D|←a,b,c na PUNOJ širini (sliding-window mult, bez one-hot 255-zida) ==
+faze MULT_AC/MULT_BB/ANCHOR perm-vezane ; L=64 ; kolone 160 (<255) ; aktivnih redova 512
+
+[validan]   |D| vezan za a,b,c (L=64): verify=PASS (ocek PASS) ; dokaz 152.7 KB ; prove 15766 ms ; sec 108
+[negativan] AC proizvod pogrešan: verify=FAIL (ocek FAIL) ; dokaz 150.9 KB ; prove 15844 ms ; sec 108
+[negativan] |D|[3]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 153.3 KB ; prove 15066 ms ; sec 108
+[negativan] perm PVAL pokvaren (mult↔anchor): verify=FAIL (ocek FAIL) ; dokaz 150.0 KB ; prove 15735 ms ; sec 108
+
+SVE PROSLO: |D|←a,b,c na L=64, sliding-window mult, 160 kolona < 255.
+
+=================== prover
+== OFF-CHAIN PROVER: classgroup forma -> STARK disc-anchor dokaz ==
+ulaz: /home/claude/mintlock-stark/stark/data/trajectory.txt (1 rundi u trajektoriji) ; L=125 limba
+računam AC=a·c, BB=b·b (schoolbook), dokazujem 4·AC − BB == |D| ...
+dokaz: 108.1 KB ; prove 2325 ms ; sec 108
+RECEIPT: 110846 bajta -> /home/claude/mintlock-stark/stark/data/receipt.bin (magic MLK1, 12 javnih elemenata)
+
+prover gotov: |D| vezan za PRAVU redukovanu formu; receipt spreman za on-chain verifier.

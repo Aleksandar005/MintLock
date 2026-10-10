@@ -1,0 +1,10 @@
+== DISC-ANCHOR: 4ac−b²==|D| na 2048-bit formi, LogUp range-check (bez bit-dekomp) ==
+glavne kolone: 15 + aux (LogUp): 4 = 19 ; aktivnih limba: 128 ; N=65536
+
+sanity: anchor 4ac=b²+|D| drži na svih 128 limba
+[validan]   disc-anchor: verify=PASS (ocek PASS) ; dokaz 107.6 KB ; prove 2909 ms ; sec 108
+[negativan] |D|[40]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 106.1 KB ; prove 2411 ms ; sec 108
+[negativan] AC[70]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 107.8 KB ; prove 2443 ms ; sec 108
+[negativan] L[20]=70000 (van tablice, LogUp): verify=FAIL (ocek FAIL) ; dokaz 108.7 KB ; prove 2419 ms ; sec 108
+
+SVE PROSLO: |D| interno vezan za formu preko anchor-a; LogUp range-check.

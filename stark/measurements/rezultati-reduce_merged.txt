@@ -1,0 +1,15 @@
+== KORAK 3: SPAJANJE — svaka runda = 64-limb BLOK (128 reda), 228 rundi ulančano ==
+glavne kolone: 20 + aux (LogUp): 3 = 23 (< 255)
+aktivnih redova: 29184 (= 228 rundi × 128 limb-reda) ; N = 65536 (tablica dominira)
+mehanizmi u JEDNOM tragu: 64-limb mult+carry (P=k·B) + normalize (W>=0)
+  + LogUp range-check + PERM vezivanje lanca (grand-product) + CTR ; |D| javni ulaz
+
+startni blok: k=3 ; a[0]=41172 b[0]=39932 c[0]=9306 ; |D|=10803839 (disc-vezivanje)
+[validan]   228 blokova × 64-limb ulančano: verify=PASS (ocek PASS) ; dokaz 109.5 KB ; prove 3084 ms ; verify 0.9 ms ; sec 108
+[negativan] P van [0,2^16) @blok 30 (LogUp): verify=FAIL (ocek FAIL) ; dokaz 107.6 KB ; prove 2978 ms ; verify 0.3 ms ; sec 108
+[negativan] P pogrešan proizvod @blok 50 (mult+carry): verify=FAIL (ocek FAIL) ; dokaz 108.7 KB ; prove 3117 ms ; verify 0.5 ms ; sec 108
+[negativan] W pogrešan @blok 100 (normalize): verify=FAIL (ocek FAIL) ; dokaz 107.8 KB ; prove 2996 ms ; verify 0.2 ms ; sec 108
+[negativan] a-limb @blok 60 (prekinut lanac, PERM): verify=FAIL (ocek FAIL) ; dokaz 108.0 KB ; prove 2918 ms ; verify 0.2 ms ; sec 108
+
+SVE PROSLO: Korak 1 (64-limb blok-aritmetika) + Korak 2 (ulančavanje) spojeni u
+JEDAN trag pod JEDNOM deljenom LogUp tablicom; 23 kolona ≪ 255.

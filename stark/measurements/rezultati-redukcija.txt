@@ -1,0 +1,29 @@
+
+================  D = 1024-bit  ================
+  D generisan za 0.99s ; |D|=1024 bita ; D%4=1
+  redukovana forma: a≈4 bita ; teorijska granica a≈|D|/2≈512 bita
+  80 kompozicija punih formi izmereno za 6.39s
+  a proizvoda pre redukcije ≈ 1019 bita  ->  a posle ≈ 510 bita
+  RHO RUNDE (N):   min 92  |  mean 104.5  |  p95 114  |  max 120
+  max |k| po redukciji (bita): min 6 | mean 8.8 | p95 12 | max 14
+
+================  D = 2048-bit  ================
+  D generisan za 1.38s ; |D|=2048 bita ; D%4=1
+  redukovana forma: a≈2 bita ; teorijska granica a≈|D|/2≈1024 bita
+  50 kompozicija punih formi izmereno za 17.19s
+  a proizvoda pre redukcije ≈ 2043 bita  ->  a posle ≈ 1022 bita
+  RHO RUNDE (N):   min 189  |  mean 207.1  |  p95 218  |  max 228
+  max |k| po redukciji (bita): min 7 | mean 10.3 | p95 13 | max 14
+
+  (1024->2048: N x1.98 , priblizno linearno sa bit-sirinom |D|)
+
+================  IMPLIKACIJA NA DUZINU TRAGA  ================
+  Faza RED: redova_traga ≈ N_rho * (MUL/CARRY podredova po rundi).
+  N_rho (worst-case u uzorku) je jedini deo koji zavisi od ulaza.
+  D=1024-bit:  dizajn-N (p95) = 114  ; hard-cap N (max) = 120  ; k staje u 12-bit (p95)
+  D=2048-bit:  dizajn-N (p95) = 218  ; hard-cap N (max) = 228  ; k staje u 13-bit (p95)
+
+  Napomena: k je MALI (par bita) -> mnozenja k*a, k^2*a su usko-ulazna;
+  dominira b^2 i a*c u anchor-invarijanti, ne k-mnozenja.
+
+SVE PROVERE (disc ocuvana, izlaz redukovan) PROSLE.

@@ -1,0 +1,14 @@
+== NORMALIZE/RHO lanac: 7 rundi na pravoj formi ==
+k niz = [-4, -9, -1, 0, 0, 0, 0]
+trag: 8 redova x 164 kolona (od cega ~156 range-check kolona -> motiv za LogUp)
+
+== DOKAZ ==
+velicina dokaza : 41547 B (40.6 KB) ; prove 13.2 ms ; sec(conj) 121 bita
+[PASS] validan dokaz za 0.31 ms
+
+== NEGATIVNI TESTOVI ==
+lazan pocetni b        : ODBIJEN [ok]
+lazan finalni c        : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: rho lanac dokazan (znak + normalizacioni opseg + ulancavanje).

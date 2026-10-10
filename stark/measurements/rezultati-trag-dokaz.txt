@@ -1,0 +1,53 @@
+# ============================================================
+#  MERENJE: velicina STARK dokaza vs (broj kolona, duzina traga)
+#  Winterfell 0.8.3, Goldilocks + kvadr. ekstenzija,
+#  blowup 8, 42 upita, grinding 16 (isti parametri kao PoC).
+#  Masina: 1 vCPU sandbox, rustc 1.75.
+# ============================================================
+
+## SWEEP SIRINE (n=4096 fiksno) -> izoluje kolonski clan
+cols=5    proof=56.0 KB
+cols=64   proof=78.6 KB
+cols=128  proof=101.1 KB
+cols=192  proof=124.8 KB
+# linearno: ~375 B po koloni (= 42 upita x 8 B + overhead ekstenzije). Potvrdjeno.
+
+## SWEEP DUZINE (cols=192 fiksno) -> izoluje FRI/duzinski clan
+n=1024   proof=105.7 KB
+n=2048   proof=113.8 KB
+n=4096   proof=124.8 KB
+n=8192   proof=131.9 KB
+# ~logaritamski: ~8 KB po udvostrucenju. Potvrdjeno FRI ponasanje.
+
+## NARROW-LONG (cols=96, limbovi kroz redove) -> stvaran oblik 2048-bit reduce
+n=32768   proof=119.3 KB   prove=7.0 s
+n=65536   proof=131.6 KB   prove=12.6 s
+n=131072  proof=139.1 KB   prove=35.1 s   verify=1.36 ms
+
+# ============================================================
+#  TVRD LIMIT (izmereno): Winterfell 0.8 kapira trag na 255 kolona
+#  (glavne + kompozicione zajedno). Stanje forme a,b,c na 64x 32-bit
+#  limba = 192 kolone -> NE STAJE zajedno sa produkt/carry kolonama.
+#  Posledica: 2048-bit reduce MORA biti uzak-i-dugacak, ne sirok.
+# ============================================================
+## DUZINA TRAGA (uzak rezim, ~1 limb-celija/red uz lako pakovanje)
+  ukupno limb-celija: mean ~97,010  max ~133,608
+  next_pow2:          dizajn n=131,072  worst n=262,144
+
+## VELICINA DOKAZA (interpolacija izmerene narrow-long krive)
+  n=65536  -> ~132 KB   (dizajn, p95)
+  n=131072 -> ~139 KB   (blizu worst-case)
+  -> realan 2048-bit reduce dokaz: ~130-140 KB  [IZMEREN oblik]
+
+## POREDJENJE sa toy-PoC
+  toy PoC (5 kol, 128 red):   ~20 KB
+  pun 2048-bit reduce:        ~135 KB   (~7x veci)
+
+## IMPLIKACIJA NA GAS (on-chain verifikacija ~135 KB dokaza)
+  calldata (~135 KB): ~1.5-2.2M gas (11-16 gas/B)
+  FRI/Merkle/polje compute (StarkEx-stil): ~2-4M gas
+  UKUPNO po dokazu: ~4-7M gas  -> potvrdjuje plan-ov ~5M anchor (ne ~1-2M)
+
+## AGREGACIJA (kljucni argument cene po bidu)
+  dokaz raste ~log u broju cinjenica -> N otvaranja u 1 dokazu ~ isti ~135 KB
+  cena po otvaranju = ~5M / N  -> ka ~1000-ama gasa na skali. Potvrdjeno.

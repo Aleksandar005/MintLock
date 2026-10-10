@@ -1,0 +1,8 @@
+== MILESTONE C: anchor 4ac=b²+|D| na 2048-bit (prava forma) ==
+AC,BB,|D|: 128 limba (2048-bit) ; narrow-long combine
+trag: 128 redova x 44 kolona (broadcast izbegnut: 44 vs 384)
+dokaz 29.2 KB ; prove 13 ms ; verify 0.88 ms ; sec 117 ; verify=PASS
+lazno |D|: ODBIJEN [ok]
+lazno AC:  ODBIJEN [ok]
+
+SVE PROSLO: anchor na 2048-bit, 44 kolona < 255.

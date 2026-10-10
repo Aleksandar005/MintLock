@@ -1,0 +1,5 @@
+== INTEGRISANO: rho lanac + LogUp (BM,W1) ; 11 kolona glavni + 2 aux ; tablica [0,2^15) ==
+[validan]  rho lanac + range-check: verify=PASS (ocek PASS) ; dokaz 93.2 KB ; prove 1110 ms ; sec 109
+[negativan] BM[3] van opsega (40000): verify=FAIL (ocek FAIL) ; dokaz 91.2 KB ; prove 1184 ms ; sec 109
+
+SVE PROSLO: rho + LogUp integrisano u jedan dokaz.

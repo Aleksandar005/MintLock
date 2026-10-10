@@ -1,0 +1,8 @@
+== MILESTONE E1: puna rho normalize-izlaz B'=B+2kA na 2048-bit ==
+sklopljeno: single-limb mult(P=2kA) + potpisano oduz(B'=B-P) + norm(A-|B'|>=0)
+trag: 128 redova x 63 kolona ; sve fuzionisano, bez selektora
+dokaz 32.5 KB ; prove 12 ms ; verify 1.34 ms ; sec 117 ; verify=PASS
+lazno B':  ODBIJEN [ok]
+lazno W (norm): ODBIJEN [ok]
+
+SVE PROSLO: puna normalize-izlaz vrednost sklopljena iz primitiva, 63 kolona.

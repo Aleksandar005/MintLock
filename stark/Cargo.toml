@@ -1,0 +1,13 @@
+[package]
+name = "stark-poc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+winterfell = "0.8"
+# pin transitive deps to versions compatible with cargo 1.75 (no edition2024)
+cpufeatures = "=0.2.12"
+blake3 = "=1.5.1"
+
+[profile.release]
+opt-level = 3

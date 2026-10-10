@@ -1,0 +1,43 @@
+
+================  D = 1024-bit  ================
+  D generisan za 0.80s ; |D|=1024 bita ; D%4=1
+  [ok] D je negativan, |D| ima tacan broj bitova
+  [ok] disc(g) == D
+  [ok] disc(identity) == D
+  koeficijent a redukovane forme ~ 3 bita (ocekivano ~|D|/2)
+  [ok] disc ocuvana na slucajnim elementima
+  [ok] neutral: x*e == x
+  [ok] inverz: x*x^-1 == e
+  [ok] komutativnost: x*y == y*x
+  [ok] asocijativnost: (x*y)*z == x*(y*z)
+  [ok] NUCOMP == compose na 60 slucajnih parova (+ disc ocuvana)
+  [ok] nucomp(f,f) == square(f)
+  [ok] sekvencijalno g^(2^300) == power(g, 2^300)
+  [ok] Wesolowski verify(validan) == True
+  [ok] Wesolowski verify(lazno w) == False
+  propusnost: square 0.377 ms/op | compose 0.360 ms/op | nucomp 0.244 ms/op
+
+================  D = 2048-bit  ================
+  D generisan za 3.72s ; |D|=2048 bita ; D%4=1
+  [ok] D je negativan, |D| ima tacan broj bitova
+  [ok] disc(g) == D
+  [ok] disc(identity) == D
+  koeficijent a redukovane forme ~ 2 bita (ocekivano ~|D|/2)
+  [ok] disc ocuvana na slucajnim elementima
+  [ok] neutral: x*e == x
+  [ok] inverz: x*x^-1 == e
+  [ok] komutativnost: x*y == y*x
+  [ok] asocijativnost: (x*y)*z == x*(y*z)
+  [ok] NUCOMP == compose na 60 slucajnih parova (+ disc ocuvana)
+  [ok] nucomp(f,f) == square(f)
+  [ok] sekvencijalno g^(2^300) == power(g, 2^300)
+  [ok] Wesolowski verify(validan) == True
+  [ok] Wesolowski verify(lazno w) == False
+  propusnost: square 0.907 ms/op | compose 0.861 ms/op | nucomp 0.616 ms/op
+
+================  RAST CENE 1024 -> 2048  ================
+  kvadriranje               : 0.377 -> 0.907 ms/op  (x2.41)
+  kompozicija (klasicna)    : 0.360 -> 0.861 ms/op  (x2.39)
+  NUCOMP                    : 0.244 -> 0.616 ms/op  (x2.52)
+
+SVE 2048-bit PROVERE PROSLE.

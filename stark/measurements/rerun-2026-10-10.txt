@@ -1,0 +1,208 @@
+# Rerun 2026-10-10, rustc 1.97.0, winterfell 0.8.3 (Cargo.lock), cargo build --release
+
+=================== stark-poc
+== Wesolowski verifikaciona jednacina (prime-field analog) ==
+polje: Goldilocks p = 2^64 - 2^32 + 1
+pi = 81985529216486895
+u  = 18364758544493064720
+l  = 6858309431304716291  (~63-bit)
+r  = 1908175906733348337
+w  = pi^l * u^r = 12795735015439882997
+trace: 128 redova x 5 kolone
+[ok] trace reprodukuje (w, l, r) na kraju
+
+== DOKAZ ==
+vreme dokazivanja      : 10.9 ms
+velicina dokaza        : 20832 B (20.34 KB)
+sigurnost (conjectured): 117 bita
+sigurnost (proven)     : 74 bita
+
+== VERIFIKACIJA ==
+[PASS] validan dokaz PRIHVACEN za 0.29 ms
+neg-test (lazno w)      : ODBIJEN [ok]
+neg-test (ostecen dokaz): ODBIJEN [ok]
+SWEEP n=128 proof_B=20832 prove_ms=10.9 verify_ms=0.29 sec_conj=117
+
+SVE PROSLO.
+
+=================== mulseg
+== PRAVI MUL+CARRY segment: A * b = C ==
+A   = 8 limba (16-bit): [43981, 4660, 65535, 1, 32768, 32767, 57005, 48879]
+b   = 0xc0de
+C   = 9 limba: [48070, 19078, 19673, 33211, 1, 40849, 14964, 31493, 36825]
+[ok] nezavisna referentna multiplikacija se poklapa sa C
+
+== DOKAZ ==
+trace: 16 redova x 35 kolona (35 constraint, max deg 2)
+velicina dokaza : 13913 B (13.6 KB)
+dokazivanje     : 3.0 ms ; sigurnost(conj) 120 bita
+
+== VERIFIKACIJA ==
+[PASS] validan dokaz za 0.19 ms
+
+== NEGATIVNI TESTOVI ==
+lazno C (flip bit)     : ODBIJEN [ok]
+lazno b                : ODBIJEN [ok]
+lazno A                : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: pravi limb-proizvod dokazan i zvucnost potvrdjena.
+
+=================== mulseg2
+== PRAVI multi-limb × multi-limb: A · B = C ==
+A = 8 limba, B = 8 limba (16-bit svaki)
+C = 16 limba: [39339, 47086, 51959, 5765, 29208, 19389, 64604, 19168, 40502, 18210, 51083, 58753, 15409, 46882, 61325, 48688]
+[ok] referentna multiplikacija se poklapa sa C
+max akumulator s = 12291491618 (~2^33.5) ; max carry = 187553 (~2^17.5) ; p ~ 2^64
+
+== DOKAZ ==
+trace: 32 redova x 71 kolona (max deg 3)
+velicina dokaza : 29673 B (29.0 KB)
+dokazivanje     : 4.5 ms ; sigurnost(conj) 119 bita
+
+== VERIFIKACIJA ==
+[PASS] validan dokaz za 0.27 ms
+
+== NEGATIVNI TESTOVI ==
+lazno C                : ODBIJEN [ok]
+lazno A                : ODBIJEN [ok]
+lazno B                : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: multi-limb proizvod dokazan, bounded akumulator zvucan.
+
+=================== mulseg3
+== ANCHOR: 4·(a·c) == b² + |D|  (prava forma, 256-bit D) ==
+AC,BB,|D|: 18 limba (16-bit) ; trag 32 redova x 113 kolona (max deg 2)
+
+== DOKAZ ==
+velicina dokaza : 42995 B (42.0 KB) ; prove 2.0 ms ; sec(conj) 119 bita
+[PASS] validan dokaz za 0.25 ms
+
+== NEGATIVNI TESTOVI ==
+lazno |D|              : ODBIJEN [ok]
+lazno AC               : ODBIJEN [ok]
+lazno BB               : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: anchor 4ac=b²+|D| dokazan na pravoj formi, zvucnost potvrdjena.
+
+=================== mulseg4
+== NORMALIZE/RHO lanac: 7 rundi na pravoj formi ==
+k niz = [-4, -9, -1, 0, 0, 0, 0]
+trag: 8 redova x 164 kolona (od cega ~156 range-check kolona -> motiv za LogUp)
+
+== DOKAZ ==
+velicina dokaza : 41547 B (40.6 KB) ; prove 5.4 ms ; sec(conj) 121 bita
+[PASS] validan dokaz za 0.27 ms
+
+== NEGATIVNI TESTOVI ==
+lazan pocetni b        : ODBIJEN [ok]
+lazan finalni c        : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: rho lanac dokazan (znak + normalizacioni opseg + ulancavanje).
+
+=================== mulseg5_logup
+== LogUp range-check ; tablica [0,256) ; glavni trag 3 kolone + 1 aux ==
+(range-check 256 vrednosti u ~4 kolone umesto ~8 boolean/vrednost)
+
+[validan]        sve u opsegu: verify=PASS (ocekivano PASS) ; dokaz 29274 B (28.6 KB) ; sec 116
+[negativan] W[5]=300 (van opsega): verify=FAIL (ocekivano FAIL) ; dokaz 28943 B (28.3 KB) ; sec 116
+[negativan] W[100]=256 (na granici): verify=FAIL (ocekivano FAIL) ; dokaz 30590 B (29.9 KB) ; sec 116
+
+SVE PROSLO: LogUp range-check radi; van-opsega vrednosti ODBIJENE.
+
+=================== mulseg6_chain
+== PUNO ULANCAVANJE: rho lanac + deljena LogUp tablica u jednom dokazu ==
+rho stanje 9 kolona + LogUp 3 aux kolone = 12 UKUPNO (mulseg4 imao 164!)
+range-check |k| svake runde kroz JEDNU deljenu tablicu; kolone konstantne u broju rundi.
+
+[validan]   tablica [0,16), 7 rundi: verify=PASS (ocek PASS) ; kolone=9m+3aux ; L=16 ; dokaz 10.7KB ; prove 1.8ms ; sec 120
+[negativan] tablica [0,8), |k|=9 van opsega: verify=FAIL (ocek FAIL) ; kolone=9m+3aux ; L=8 ; dokaz 8.1KB ; prove 3.7ms ; sec 121
+
+SVE PROSLO: lanac rundi + deljeni LogUp range-check integrisani; kolone 164 -> 12.
+
+=================== mulseg6_integ
+== INTEGRISANO: rho lanac + LogUp (BM,W1) ; 11 kolona glavni + 2 aux ; tablica [0,2^15) ==
+[validan]  rho lanac + range-check: verify=PASS (ocek PASS) ; dokaz 93.2 KB ; prove 1116 ms ; sec 109
+[negativan] BM[3] van opsega (40000): verify=FAIL (ocek FAIL) ; dokaz 91.2 KB ; prove 869 ms ; sec 109
+
+SVE PROSLO: rho + LogUp integrisano u jedan dokaz.
+
+=================== mulseg_a
+== MILESTONE A: 64-limb single-limb  A · b = C ==
+A = 64 limba (1024-bit) ; b = 0xbeef ; C = 65 limba
+trag: 128 redova x 35 kolona  (sirina KAO mulseg na 8 limba!)
+dokaz 26.9 KB ; prove 11.1 ms ; verify 0.68 ms ; sec 117 ; verify=PASS
+lazno C: ODBIJEN [ok]
+lazno A: ODBIJEN [ok]
+
+SVE PROSLO: 64-limb single-limb mnozilac, sirina 35 (nezavisna od broja limba).
+
+=================== mulseg_b
+== MILESTONE B: 64×64 multi-limb  a · c = C  (sliding-window) ==
+a,c = 64 limba (1024-bit) -> C = 128 limba (2048-bit)
+trag: 128 redova x 169 kolona  (POS one-hot izbegnut -> 169 < 255)
+dokaz 66.0 KB ; prove 20 ms ; verify 1.10 ms ; sec 117 ; verify=PASS
+lazno C: ODBIJEN [ok]
+lazno a: ODBIJEN [ok]
+
+SVE PROSLO: 64×64 mnozilac na punoj sirini, 169 kolona < 255.
+
+=================== mulseg_c
+== MILESTONE C: anchor 4ac=b²+|D| na 2048-bit (prava forma) ==
+AC,BB,|D|: 128 limba (2048-bit) ; narrow-long combine
+trag: 128 redova x 44 kolona (broadcast izbegnut: 44 vs 384)
+dokaz 29.2 KB ; prove 13 ms ; verify 0.83 ms ; sec 117 ; verify=PASS
+lazno |D|: ODBIJEN [ok]
+lazno AC:  ODBIJEN [ok]
+
+SVE PROSLO: anchor na 2048-bit, 44 kolona < 255.
+
+=================== mulseg_d1
+== MILESTONE D1: FUZIJA mnozilac(a·c) + anchor u jednom tragu ==
+bez faznog selektora: AC = izlaz mnozioca = ulaz anchora (unutar-red)
+trag: 128 redova x 212 kolona (169 mnozilac + 43 anchor, deljen AC) < 255
+dokaz 78.9 KB ; prove 18 ms ; verify 1.25 ms ; sec 117 ; verify=PASS
+lazno a (lomi AC->anchor): ODBIJEN [ok]
+lazno |D|: ODBIJEN [ok]
+
+SVE PROSLO: mnozilac+anchor fuzionisani u jedan trag (212 kolona, bez selektora).
+
+=================== mulseg_d2
+== MILESTONE D2: potpisano oduzimanje Z=X-Y na 2048-bit (X=a·c, Y=b²) ==
+znak Z = 0 ; narrow-long ; trag 128 redova x 22 kolona
+dokaz 20.7 KB ; prove 6 ms ; verify 0.55 ms ; sec 117 ; verify=PASS
+lazno Z:      ODBIJEN [ok]
+pogresan znak: ODBIJEN [ok]
+
+SVE PROSLO: potpisano oduzimanje na 2048-bit, 22 kolona ; pogresan znak nemoguc.
+
+=================== mulseg_e1
+== MILESTONE E1: puna rho normalize-izlaz B'=B+2kA na 2048-bit ==
+sklopljeno: single-limb mult(P=2kA) + potpisano oduz(B'=B-P) + norm(A-|B'|>=0)
+trag: 128 redova x 63 kolona ; sve fuzionisano, bez selektora
+dokaz 32.5 KB ; prove 12 ms ; verify 1.22 ms ; sec 117 ; verify=PASS
+lazno B':  ODBIJEN [ok]
+lazno W (norm): ODBIJEN [ok]
+
+SVE PROSLO: puna normalize-izlaz vrednost sklopljena iz primitiva, 63 kolona.
+
+=================== mulseg_e2
+== MILESTONE E2: ulancavanje dva rho segmenta + D-vezivanje ==
+|D| = 10803839 ; segment = 7 rundi + disc-invarijanta 4ac-b²==|D| po redu
+
+seg1 (F0->F7):  verify=PASS ; dokaz 4.8 KB
+seg2 (F7->F14): verify=PASS ; dokaz 4.7 KB
+
+== ULANCAVANJE (boundary I/O) ==
+seg1.F_out == seg2.F_in : PASS
+seg1.|D| == seg2.|D|    : PASS  (D-vezivanje)
+
+== NEGATIVNI TESTOVI ==
+prekinut lanac (F_in != F_out): ODBIJEN [ok]
+D-vezivanje (lazan |D|):        ODBIJEN [ok]
+lazan F_out (seg1):             ODBIJEN [ok]
+
+SVE PROSLO: dve runde ulancane preko boundary I/O, D vezano, falsifikati padaju.

@@ -1,0 +1,8 @@
+== LogUp range-check ; tablica [0,256) ; glavni trag 3 kolone + 1 aux ==
+(range-check 256 vrednosti u ~4 kolone umesto ~8 boolean/vrednost)
+
+[validan]        sve u opsegu: verify=PASS (ocekivano PASS) ; dokaz 29274 B (28.6 KB) ; sec 116
+[negativan] W[5]=300 (van opsega): verify=FAIL (ocekivano FAIL) ; dokaz 28943 B (28.3 KB) ; sec 116
+[negativan] W[100]=256 (na granici): verify=FAIL (ocekivano FAIL) ; dokaz 30590 B (29.9 KB) ; sec 116
+
+SVE PROSLO: LogUp range-check radi; van-opsega vrednosti ODBIJENE.

@@ -1,0 +1,7 @@
+== MILESTONE D2: potpisano oduzimanje Z=X-Y na 2048-bit (X=a·c, Y=b²) ==
+znak Z = 0 ; narrow-long ; trag 128 redova x 22 kolona
+dokaz 20.7 KB ; prove 10 ms ; verify 0.85 ms ; sec 117 ; verify=PASS
+lazno Z:      ODBIJEN [ok]
+pogresan znak: ODBIJEN [ok]
+
+SVE PROSLO: potpisano oduzimanje na 2048-bit, 22 kolona ; pogresan znak nemoguc.

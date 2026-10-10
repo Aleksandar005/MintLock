@@ -1,0 +1,8 @@
+== MILESTONE A: 64-limb single-limb  A · b = C ==
+A = 64 limba (1024-bit) ; b = 0xbeef ; C = 65 limba
+trag: 128 redova x 35 kolona  (sirina KAO mulseg na 8 limba!)
+dokaz 26.9 KB ; prove 9.4 ms ; verify 0.60 ms ; sec 117 ; verify=PASS
+lazno C: ODBIJEN [ok]
+lazno A: ODBIJEN [ok]
+
+SVE PROSLO: 64-limb single-limb mnozilac, sirina 35 (nezavisna od broja limba).

@@ -1,0 +1,21 @@
+== PRAVI MUL+CARRY segment: A * b = C ==
+A   = 8 limba (16-bit): [43981, 4660, 65535, 1, 32768, 32767, 57005, 48879]
+b   = 0xc0de
+C   = 9 limba: [48070, 19078, 19673, 33211, 1, 40849, 14964, 31493, 36825]
+[ok] nezavisna referentna multiplikacija se poklapa sa C
+
+== DOKAZ ==
+trace: 16 redova x 35 kolona (35 constraint, max deg 2)
+velicina dokaza : 13913 B (13.6 KB)
+dokazivanje     : 2.8 ms ; sigurnost(conj) 120 bita
+
+== VERIFIKACIJA ==
+[PASS] validan dokaz za 0.18 ms
+
+== NEGATIVNI TESTOVI ==
+lazno C (flip bit)     : ODBIJEN [ok]
+lazno b                : ODBIJEN [ok]
+lazno A                : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: pravi limb-proizvod dokazan i zvucnost potvrdjena.

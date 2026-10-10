@@ -1,0 +1,9 @@
+== DISC-FULL: |D| <- a,b,c  (AC=a·c, BB=b·b one-hot conv + anchor 4AC-BB=|D|) ==
+faze MULT_AC/MULT_BB/ANCHOR u jednom tragu, perm-vezane ; L=4 demo ; kolone 42
+
+[validan]   |D| vezan za a,b,c: verify=PASS (ocek PASS) ; dokaz 73.8 KB ; prove 182 ms ; sec 112
+[negativan] AC proizvod pogrešan: verify=FAIL (ocek FAIL) ; dokaz 74.2 KB ; prove 185 ms ; sec 112
+[negativan] |D|[3]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 72.7 KB ; prove 184 ms ; sec 112
+[negativan] perm PVAL pokvaren (mult↔anchor veza): verify=FAIL (ocek FAIL) ; dokaz 71.2 KB ; prove 182 ms ; sec 112
+
+SVE PROSLO: |D| interno izveden iz a,b,c (mult) i vezan anchor-om, faze perm-vezane.

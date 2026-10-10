@@ -1,0 +1,7 @@
+== OFF-CHAIN PROVER: classgroup forma -> STARK disc-anchor dokaz ==
+ulaz: stark-poc-segments/trajectory.txt (1 rundi u trajektoriji) ; L=125 limba
+računam AC=a·c, BB=b·b (schoolbook), dokazujem 4·AC − BB == |D| ...
+dokaz: 108.1 KB ; prove 3463 ms ; sec 108
+RECEIPT: 110846 bajta -> /tmp/r.bin (magic MLK1, 12 javnih elemenata)
+
+prover gotov: |D| vezan za PRAVU redukovanu formu; receipt spreman za on-chain verifier.

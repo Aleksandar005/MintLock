@@ -1,0 +1,9 @@
+== DISC-FULL L=64: |D|←a,b,c na PUNOJ širini (sliding-window mult, bez one-hot 255-zida) ==
+faze MULT_AC/MULT_BB/ANCHOR perm-vezane ; L=64 ; kolone 160 (<255) ; aktivnih redova 512
+
+[validan]   |D| vezan za a,b,c (L=64): verify=PASS (ocek PASS) ; dokaz 152.7 KB ; prove 30824 ms ; sec 108
+[negativan] AC proizvod pogrešan: verify=FAIL (ocek FAIL) ; dokaz 150.9 KB ; prove 31952 ms ; sec 108
+[negativan] |D|[3]+1 (anchor puca): verify=FAIL (ocek FAIL) ; dokaz 153.3 KB ; prove 31685 ms ; sec 108
+[negativan] perm PVAL pokvaren (mult↔anchor): verify=FAIL (ocek FAIL) ; dokaz 150.0 KB ; prove 30447 ms ; sec 108
+
+SVE PROSLO: |D|←a,b,c na L=64, sliding-window mult, 160 kolona < 255.

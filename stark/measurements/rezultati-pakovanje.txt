@@ -1,0 +1,51 @@
+# ============================================================
+#  IZBOR PAKOVANJA + KALIBRACIJA SIGURNOSTI (izmereno)
+#  Winterfell 0.8.3, Goldilocks + kvadr. ekstenzija, grinding 16.
+#  Sav posao fiksiran na ~134k limb-celija (worst-case 2048-bit reduce).
+# ============================================================
+
+## 1) JEDNAK-POSAO PAKOVANJA (blowup 8, q 42)
+#  P = limb-celija po redu ; kolone rastu sa P, duzina pada sa P.
+P=1  cols=64   n=131072  proof=129 KB  prove=20.9s  sec=107
+P=2  cols=96   n=65536   proof=132 KB  prove=12.3s  sec=108
+P=4  cols=128  n=32768   proof=129 KB  prove=6.7s   sec=109   <-- balans
+P=8  cols=192  n=16384   proof=144 KB  prove=4.6s   sec=110   (gura 255-kap)
+#  Nalaz: sire pakovanje = bolja sigurnost + brze dokazivanje, ~ista velicina.
+#  P=8 naduva kolonski clan (144 KB) i pretrpava 255-kap. P=4 je optimum.
+
+## 2) SIGURNOST JE OGRANICENA POLJEM, NE UPITIMA (cols=128, n=32768)
+#  Povecanje upita NE dize sec_conj -> samo naduva dokaz.
+q=42  proof=129 KB  sec=109
+q=54  proof=162 KB  sec=109   (bacen prostor)
+q=64  proof=186 KB  sec=109   (bacen prostor)
+q=80  proof=226 KB  sec=109   (bacen prostor)
+#  Uzrok: Goldilocks^2 ~ 2^128 kapira konjekturisanu sigurnost ~109 na n=32768.
+#  Poluga za >115 bita je KUBNA ekstenzija (~2^192), ne vise upita. Za
+#  prototip 109 (StarkEx-nivo) je dovoljno -> ne trosi na to.
+
+## 3) DONJA GRANICA UPITA (cols=128, n=32768, blowup 8)
+q=42  proof=129 KB   sec=109
+q=36  proof=114 KB   sec=109    <-- KOLENO: ista sigurnost, -15 KB
+q=30  proof=96.6 KB  sec=105
+q=27  proof=89.2 KB  sec=96
+q=24  proof=80.9 KB  sec=71   ODBIJEN (ispod min-95)
+#  36 upita x log2(8)=108 bita + grinding ~ poklopi polje-limit 109.
+#  Iznad 36 upita placas pouzdanost koju polje ionako kapira.
+
+# ============================================================
+#  PREPORUKA (izmereno-optimalna tacka)
+# ============================================================
+#  P=4 : cols=128, n=32768, q=36, blowup 8, grinding 16
+#    -> dokaz ~114 KB, sec_conj 109, prove ~6.7s, verify ~1.2 ms
+#  vs naivno (cols=64,n=131072,q=42): 129 KB, sec 107, prove 21s
+#    -> preporuka je manja, sigurnija i 3x brza za dokazivanje.
+
+## IMPLIKACIJA NA GAS (optimizovan ~114 KB dokaz)
+  calldata (~114 KB): ~1.25-1.82M gas (11-16 gas/B)
+  FRI/Merkle/polje compute: ~2-4M gas
+  UKUPNO po dokazu: ~3.3-5.8M gas  (sredina ~4.5M)
+  -> potvrdjuje ~5M anchor; optimizacija upita spusti calldata deo ~12%.
+
+## SLEDECE (ako se ide na >115-bit sigurnost)
+  kubna ekstenzija Goldilocks (~2^192) dize polje-limit; kosta prove-time
+  i malo dokaza. Za prototip nepotrebno (109 = StarkEx-nivo).

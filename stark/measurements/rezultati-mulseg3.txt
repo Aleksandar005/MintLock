@@ -1,0 +1,14 @@
+== ANCHOR: 4·(a·c) == b² + |D|  (prava forma, 256-bit D) ==
+AC,BB,|D|: 18 limba (16-bit) ; trag 32 redova x 113 kolona (max deg 2)
+
+== DOKAZ ==
+velicina dokaza : 42995 B (42.0 KB) ; prove 2.9 ms ; sec(conj) 119 bita
+[PASS] validan dokaz za 0.48 ms
+
+== NEGATIVNI TESTOVI ==
+lazno |D|              : ODBIJEN [ok]
+lazno AC               : ODBIJEN [ok]
+lazno BB               : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: anchor 4ac=b²+|D| dokazan na pravoj formi, zvucnost potvrdjena.

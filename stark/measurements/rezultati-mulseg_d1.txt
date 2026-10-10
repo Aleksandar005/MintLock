@@ -1,0 +1,8 @@
+== MILESTONE D1: FUZIJA mnozilac(a·c) + anchor u jednom tragu ==
+bez faznog selektora: AC = izlaz mnozioca = ulaz anchora (unutar-red)
+trag: 128 redova x 212 kolona (169 mnozilac + 43 anchor, deljen AC) < 255
+dokaz 78.9 KB ; prove 23 ms ; verify 1.55 ms ; sec 117 ; verify=PASS
+lazno a (lomi AC->anchor): ODBIJEN [ok]
+lazno |D|: ODBIJEN [ok]
+
+SVE PROSLO: mnozilac+anchor fuzionisani u jedan trag (212 kolona, bez selektora).

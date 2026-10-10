@@ -1,0 +1,21 @@
+== PRAVI multi-limb × multi-limb: A · B = C ==
+A = 8 limba, B = 8 limba (16-bit svaki)
+C = 16 limba: [39339, 47086, 51959, 5765, 29208, 19389, 64604, 19168, 40502, 18210, 51083, 58753, 15409, 46882, 61325, 48688]
+[ok] referentna multiplikacija se poklapa sa C
+max akumulator s = 12291491618 (~2^33.5) ; max carry = 187553 (~2^17.5) ; p ~ 2^64
+
+== DOKAZ ==
+trace: 32 redova x 71 kolona (max deg 3)
+velicina dokaza : 29673 B (29.0 KB)
+dokazivanje     : 12.6 ms ; sigurnost(conj) 119 bita
+
+== VERIFIKACIJA ==
+[PASS] validan dokaz za 0.39 ms
+
+== NEGATIVNI TESTOVI ==
+lazno C                : ODBIJEN [ok]
+lazno A                : ODBIJEN [ok]
+lazno B                : ODBIJEN [ok]
+ostecen dokaz          : ODBIJEN [ok]
+
+SVE PROSLO: multi-limb proizvod dokazan, bounded akumulator zvucan.

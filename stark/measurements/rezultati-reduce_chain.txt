@@ -1,0 +1,14 @@
+== KORAK 2: ULANČAVANJE 228 rundi u JEDAN trag + JEDNA deljena LogUp tablica [0,2^16) ==
+glavne kolone: 14 + aux (LogUp): 1 = 15 (< 255)
+aktivnih redova: 1824 (= 228 rundi × 8 reda) ; dužina traga N = 65536 (tablica dominira)
+mehanizmi: vezivanje granice rundi (F_out==F_in) + disc-invarijanta 4ac-b²=|D| + CTR
+amortizacija: JEDNA tablica 65536 redova za |b| range-check KROZ SVIH 228 rundi
+
+startna forma: a=380 b=241 c=7146 ; |D|=10803839 ; disc očuvana kroz sve rundi
+[validan]   228 rundi ulančano: verify=PASS (ocek PASS) ; dokaz 104.2 KB ; prove 2230 ms ; verify 1.1 ms ; sec 108
+[negativan] prekinut lanac @rundi 100 (F_out!=F_in): verify=FAIL (ocek FAIL) ; dokaz 104.3 KB ; prove 1759 ms ; verify 0.2 ms ; sec 108
+[negativan] pokvarena disc @rundi 50 (4ac-b²!=|D|): verify=FAIL (ocek FAIL) ; dokaz 105.1 KB ; prove 2042 ms ; verify 0.2 ms ; sec 108
+[negativan] |b|@rundi 30 = 70000 (van tablice, LogUp): verify=FAIL (ocek FAIL) ; dokaz 104.6 KB ; prove 1759 ms ; verify 0.2 ms ; sec 108
+
+SVE PROSLO: ceo reduce (228 rundi) ulančan u JEDAN trag pod JEDNOM deljenom
+LogUp tablicom; granice rundi vezane, disc vezuje |D| svuda, CTR pun stepen.
